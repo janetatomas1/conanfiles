@@ -11,7 +11,7 @@ class Spdlog(ConanFile):
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/gabime/spdlog"
     settings = "os", "compiler", "build_type", "arch"
-    requires = []
+    requires = ["fmt/11.1.3"]
 
     def generate(self):
         tc = CMakeToolchain(self)

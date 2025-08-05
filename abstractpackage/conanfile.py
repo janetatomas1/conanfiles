@@ -17,7 +17,9 @@ class AbstractPackage(ConanFile):
         "xtensor/0.26.0",
         "pybind11/2.13.6",
         "gtest/1.16.0",
-        "ompl/1.7.0"
+        "ompl/1.7.0",
+        "xyzlabs/1.0.0",
+        "dataframe/3.6.0",
     ]
 
     def generate(self):
