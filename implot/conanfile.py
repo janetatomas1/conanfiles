@@ -25,7 +25,10 @@ class ImPlot3D(ConanFile):
         self.run(f'git clone {self.url} && cd {self.name} && git checkout {self.commit}')
 
     def _configure_cmake(self):
-        variables = {'CMAKE_CXX_COMPILER': "clang++"} if self.settings.compiler == "clang" else {}
+        variables = {
+            'CMAKE_CXX_COMPILER': "clang++",
+            'CMAKE_C_COMPILER': 'clang'
+        } if self.settings.compiler == "clang" else {}
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/",
