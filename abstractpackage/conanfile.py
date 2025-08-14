@@ -24,7 +24,7 @@ class AbstractPackage(ConanFile):
             "xyzlabs/1.0.0",
             "dataframe/3.6.0",
             "imgui/1.90.5",
-            "implot/0.16",
+            "implot/0.16.0",
         ]
         
         if self.settings.compiler == "gcc":
