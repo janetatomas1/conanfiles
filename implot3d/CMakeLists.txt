@@ -36,3 +36,4 @@ install(
     ARCHIVE DESTINATION lib
 )
 install(FILES ${CMAKE_SOURCE_DIR}/implot3d/implot3d.h DESTINATION include)
+install(FILES ${CMAKE_SOURCE_DIR}/implot3d/implot3d_internal.h DESTINATION include)
