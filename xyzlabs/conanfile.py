@@ -15,7 +15,15 @@ class XYZLabs(ConanFile):
         "glfw/3.4",
         "spdlog/1.15.3",
         "boost/1.88.0",
-        "imgui/1.90.5"
+        "xtensor/0.26.0",
+        "ompl/1.7.0",
+        "xyzlabs/1.0.0",
+        "imgui/1.90.5",
+        "implot/0.16.0",
+        "implot3d/0.2.0",
+        "stb/cci.20240531",
+        "nlohmann_json/3.11.3",
+        "concurrentqueue/1.0.4",
     ]
 
     def generate(self):
