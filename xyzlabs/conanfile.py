@@ -14,7 +14,8 @@ class XYZLabs(ConanFile):
     requires = [
         "glfw/3.4",
         "spdlog/1.15.3",
-        "boost/1.88.0"
+        "boost/1.88.0",
+        "imgui/1.90.5"
     ]
 
     def generate(self):
