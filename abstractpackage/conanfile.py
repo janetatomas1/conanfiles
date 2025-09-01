@@ -28,6 +28,7 @@ class AbstractPackage(ConanFile):
             "implot3d/0.2.0",
             "stb/cci.20240531",
             "nlohmann_json/3.11.3",
+            "concurrentqueue/1.0.4",
         ]
         
         if self.settings.compiler == "gcc":
