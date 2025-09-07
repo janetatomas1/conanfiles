@@ -6,7 +6,7 @@ from conan.tools.files import get
 
 class GTest(ConanFile):
     name = "gtest"
-    version = "1.16.0"
+    version = "1.17.0"
     license = "MIT"
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/google/googletest"

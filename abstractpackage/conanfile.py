@@ -19,7 +19,6 @@ class AbstractPackage(ConanFile):
             "boost/1.88.0",
             "xtensor/0.26.0",
             "pybind11/2.13.6",
-            "gtest/1.16.0",
             "ompl/1.7.0",
             "xyzlabs/1.0.0",
             "dataframe/3.6.0",
@@ -29,10 +28,13 @@ class AbstractPackage(ConanFile):
             "stb/cci.20240531",
             "nlohmann_json/3.11.3",
             "concurrentqueue/1.0.4",
+            "gtest/1.17.0",
+            "pocketfft/0.0.0.cci.20240801",
         ]
         
         if self.settings.compiler == "gcc":
             deps.append("symengine/0.14.0")
+            deps.append("cairo/1.18.0")
         
         for d in deps:
             self.requires(d)
