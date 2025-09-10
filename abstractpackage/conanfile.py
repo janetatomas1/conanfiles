@@ -35,6 +35,7 @@ class AbstractPackage(ConanFile):
         if self.settings.compiler == "gcc":
             deps.append("symengine/0.14.0")
             deps.append("opencv/4.12.0")
+            deps.append("bgfx/1.0.0")
         
         for d in deps:
             self.requires(d)

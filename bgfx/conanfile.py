@@ -9,15 +9,15 @@ import pathlib
 
 class AbstractPackage(ConanFile):
     name = "bgfx"
-    version = "0.0"
+    version = "1.0.0"
     license = "Proprietary"
     url = "https://github.com/bkaradzic/bgfx.git"
     settings = "os", "compiler", "build_type", "arch"
 
     def source(self):
-        self.run("git clone https://github.com/bkaradzic/bx.git")
-        self.run("git clone https://github.com/bkaradzic/bimg.git")
-        self.run("git clone https://github.com/bkaradzic/bgfx.git")
+        self.run("git clone https://github.com/bkaradzic/bx.git && cd bx && git checkout eda38395ddfdeba08c46653b93b8d5bb21f2c863")
+        self.run("git clone https://github.com/bkaradzic/bimg.git && cd bimg && git checkout a1a2ae3c129d8c33e765eecd91801bffd985c317")
+        self.run("git clone https://github.com/bkaradzic/bgfx.git && cd bgfx && git checkout 53293f07a8eaa763fd6b87f5b06b46db67a3f59a")
 
 
     def build(self):
