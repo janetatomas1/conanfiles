@@ -34,7 +34,7 @@ class AbstractPackage(ConanFile):
         
         if self.settings.compiler == "gcc":
             deps.append("symengine/0.14.0")
-            deps.append("cairo/1.18.0")
+            deps.append("opencv/4.12.0")
         
         for d in deps:
             self.requires(d)
