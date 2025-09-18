@@ -30,6 +30,7 @@ class AbstractPackage(ConanFile):
             "concurrentqueue/1.0.4",
             "gtest/1.17.0",
             "pocketfft/0.0.0.cci.20240801",
+            "sdl/3.2.22",
         ]
         
         if self.settings.compiler == "gcc":
