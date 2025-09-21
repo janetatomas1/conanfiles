@@ -32,7 +32,7 @@ class XYZLabs(ConanFile):
 
     def source(self):
         self.run(
-            'git clone git@github.com:janetatomas1/xyzlabs.git --recursive',
+            f'git clone git@github.com:janetatomas1/xyzlabs.git --recursive && cd xyzlabs && git chekout {self.version}',
             cwd=self.source_folder
         )
 
