@@ -21,17 +21,26 @@ class AbstractPackage(ConanFile):
 
 
     def build(self):
-        self.run(f"make PREFIX=${self.package_folder}", cwd=f"{self.build_folder}/bgfx")
-        self.run(f"make PREFIX=${self.package_folder} linux-gcc-release64 -j16", cwd=f"{self.build_folder}/bgfx")
+        print(str(self.settings.build_type), "aaaaa")
+        if self.settings.os == "Windows":
+            self.run("..\\bx\\tools\\bin\\windows\\genie.exe --with-examples vs2022", cwd=f"{self.build_folder}/bgfx")
+            self.run(f"msbuild .build\\projects\\vs2022\\bgfx.sln /p:Platform=x64 /p:Configuration={str(self.settings.build_type)}", cwd=f"{self.build_folder}/bgfx")
+        else:
+            self.run(f"make PREFIX=${self.package_folder}", cwd=f"{self.build_folder}/bgfx")
+            self.run(f"make PREFIX=${self.package_folder} linux-gcc-release64 -j16", cwd=f"{self.build_folder}/bgfx")
 
     def package(self):
         os.mkdir(f'{self.package_folder}/lib')
         os.mkdir(f'{self.package_folder}/include')
 
-        libs = glob.glob(f"{self.build_folder}/bgfx/.build/linux64_gcc/bin/lib*")
+        if self.settings.os == "Windows":
+            libs = glob.glob(f"{self.build_folder}/bgfx/.build/win64_vs2022/bin/b*.lib")
+            libs += glob.glob(f"{self.build_folder}/bgfx/.build/win64_vs2022/bin/b*.pdb")
+        else:
+            libs = glob.glob(f"{self.build_folder}/bgfx/.build/linux64_gcc/bin/lib*")
 
         for l in libs:
-            shutil.copy(l, f'{self.package_folder}/lib/{pathlib.Path(l.replace('Release', '')).name}')
+            shutil.copy(l, f'{self.package_folder}/lib/{pathlib.Path(l.replace(str(self.settings.build_type), "")).name}')
         
         shutil.copytree(
             f'{self.build_folder}/bgfx/include/bgfx',

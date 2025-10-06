@@ -4,7 +4,11 @@ project(implot)
 
 set(CMAKE_CXX_STANDARD 20)
 
-file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/implot/*.cpp")
+if(MSVC)
+    file(GLOB SOURCES "${CMAKE_SOURCE_DIR}\\implot\\*.cpp")
+else()
+    file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/implot/*.cpp")
+endif()
 
 add_library(
     implot
