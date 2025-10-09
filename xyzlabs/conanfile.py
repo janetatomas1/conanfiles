@@ -15,13 +15,13 @@ class XYZLabs(ConanFile):
         "glfw/3.4",
         "spdlog/1.15.3",
         "boost/1.88.0",
-        "xtensor/0.26.0",
         "imgui/1.90.5",
         "implot/0.16.0",
         "implot3d/0.2.0",
         "stb/cci.20240531",
         "nlohmann_json/3.11.3",
         "concurrentqueue/1.0.4",
+        "glew/2.2.0",
     ]
 
     def generate(self):
@@ -32,7 +32,7 @@ class XYZLabs(ConanFile):
 
     def source(self):
         self.run(
-            f'git clone git@github.com:janetatomas1/xyzlabs.git --recursive && cd xyzlabs && git chekout {self.version}',
+            f'git clone git@github.com:janetatomas1/xyzlabs.git --recursive && cd xyzlabs && git checkout {self.version}',
             cwd=self.source_folder
         )
 

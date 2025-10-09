@@ -2,6 +2,7 @@
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 from conan.tools.files import get
+import pathlib
 
 class ImGui(ConanFile):
     name = "imgui"
@@ -12,6 +13,9 @@ class ImGui(ConanFile):
     url = "https://github.com/ocornut/imgui"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt"
+    requires = [
+        "glfw/3.4"
+    ]
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -27,7 +31,7 @@ class ImGui(ConanFile):
             'CMAKE_CXX_COMPILER': "clang++",
             'CMAKE_C_COMPILER': 'clang'
         } if self.settings.compiler == "clang" else {}
-        variables["IMGUI_DIR"] = f"{self.build_folder}/{self.name}-{self.version}"
+        variables["IMGUI_DIR"] = pathlib.PureWindowsPath(f"{self.build_folder}/{self.name}-{self.version}").as_posix()
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/",

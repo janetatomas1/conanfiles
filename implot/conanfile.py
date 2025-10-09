@@ -1,6 +1,7 @@
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
+import pathlib
 
 class ImPlot3D(ConanFile):
     name = "implot"
@@ -29,6 +30,7 @@ class ImPlot3D(ConanFile):
             'CMAKE_CXX_COMPILER': "clang++",
             'CMAKE_C_COMPILER': 'clang'
         } if self.settings.compiler == "clang" else {}
+        variables["IMPLOT_DIR"] = pathlib.PureWindowsPath(f"{self.build_folder}/{self.name}").as_posix()
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/",

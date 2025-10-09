@@ -15,6 +15,7 @@ class AbstractPackage(ConanFile):
     def requirements(self):
         deps = [
             "glfw/3.4",
+            "glew/2.2.0",
             "spdlog/1.15.3",
             "boost/1.88.0",
             "xtensor/0.26.0",
