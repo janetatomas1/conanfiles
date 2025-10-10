@@ -12,7 +12,7 @@ class ImPlot3D(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt"
     requires = [
-        "imgui/1.90.5"
+        "imgui/1.92.0"
     ]
 
     def generate(self):

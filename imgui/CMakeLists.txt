@@ -5,14 +5,26 @@ project(imgui)
 set(CMAKE_CXX_STANDARD 20)
 message(${IMGUI_DIR} "aaaa")
 set(IMGUI_BACKENDS_DIR ${IMGUI_DIR}/backends)
+
+option(USE_GLFW "Enable GLFW backend" ON)
+option(USE_SDL "Enable SDL backend" OFF)
+
+if(USE_GLFW)
+    set(BACKEND_LIBRARY glfw3)
+    set(BACKEND_FILE "${IMGUI_BACKENDS_DIR}/imgui_impl_glfw.cpp")
+elseif(USE_SDL)
+    set(BACKEND_LIBRARY SDL3)
+    set(BACKEND_FILE "${IMGUI_BACKENDS_DIR}/imgui_impl_sdl3.cpp")
+endif()
+
 set(
     IMGUI_SOURCES
     "${IMGUI_DIR}/imgui.cpp"
     "${IMGUI_DIR}/imgui_draw.cpp"
     "${IMGUI_DIR}/imgui_tables.cpp"
     "${IMGUI_DIR}/imgui_widgets.cpp"
-    "${IMGUI_BACKENDS_DIR}/imgui_impl_glfw.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp"
+    "${BACKEND_FILE}"
 )
 file(GLOB HEADER_FILES "${IMGUI_DIR}/*.h")
 file(GLOB HEADER_BACKEND_FILES "${IMGUI_BACKENDS_DIR}/*.h")
@@ -27,6 +39,11 @@ target_link_directories(
     imgui
     PUBLIC
     ${CMAKE_LIBRARY_PATH}
+)
+target_link_libraries(
+    imgui
+    PUBLIC
+    ${BACKEND_LIBRARY}
 )
 target_include_directories(
     imgui

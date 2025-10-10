@@ -22,7 +22,7 @@ class AbstractPackage(ConanFile):
             "ompl/1.7.0",
             "xyzlabs/1.0.0",
             "dataframe/3.6.0",
-            "imgui/1.90.5",
+            "imgui/1.92.0",
             "implot/0.16.0",
             "implot3d/0.2.0",
             "stb/cci.20240531",

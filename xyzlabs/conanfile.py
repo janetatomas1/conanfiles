@@ -11,18 +11,33 @@ class XYZLabs(ConanFile):
     url = "https://github.com/janetatomas1/xyzlabs"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*", "include/*"
-    requires = [
-        "glfw/3.4",
-        "spdlog/1.15.3",
-        "boost/1.88.0",
-        "imgui/1.90.5",
-        "implot/0.16.0",
-        "implot3d/0.2.0",
-        "stb/cci.20240531",
-        "nlohmann_json/3.11.3",
-        "concurrentqueue/1.0.4",
-        "glew/2.2.0",
-    ]
+    options = {
+        "window_backend": ["GLFW", "SDL"],
+    }
+    default_options = {
+        "window_backend": "GLFW",
+    }
+
+    def requirements(self):
+        self.requires(
+            "imgui/1.92.0", options={
+                "window_backend": self.options.window_backend
+            }
+        )
+
+        for r in [
+            "glfw/3.4",
+            "spdlog/1.15.3",
+            "boost/1.88.0",
+            "implot/0.16.0",
+            "implot3d/0.2.0",
+            "stb/cci.20240531",
+            "nlohmann_json/3.11.3",
+            "concurrentqueue/1.0.4",
+            "glew/2.2.0",
+        ]:
+            self.requires(r)
+
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -41,6 +56,8 @@ class XYZLabs(ConanFile):
             'CMAKE_CXX_COMPILER': "clang++",
             'CMAKE_C_COMPILER': 'clang'
         } if self.settings.compiler == "clang" else {}
+        variables["USE_GLFW"] = self.options.window_backend == "GLFW"
+        variables["USE_SDL"] = self.options.window_backend == "SDL"
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/{self.name}",
