@@ -13,7 +13,9 @@ class OMPL(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*", "include/*"
     requires = [
-        "boost/1.88.0"
+        "boost/1.88.0",
+        "eigen/3.4.0",
+
     ]
 
     def generate(self):
