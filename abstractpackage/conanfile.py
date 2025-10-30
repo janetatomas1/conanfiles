@@ -20,7 +20,7 @@ class AbstractPackage(ConanFile):
             "xtensor/0.26.0",
             "pybind11/2.13.6",
             "ompl/1.7.0",
-            "xyzlabs/1.0.0",
+            "xyzlabs/2.0.0",
             "dataframe/3.6.0",
             "imgui/1.92.0",
             "implot/0.16.0",
