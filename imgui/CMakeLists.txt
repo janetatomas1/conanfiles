@@ -24,6 +24,7 @@ set(
     "${IMGUI_DIR}/imgui_tables.cpp"
     "${IMGUI_DIR}/imgui_widgets.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp"
+    "${IMGUI_DIR}/misc/cpp/imgui_stdlib.cpp"
     "${BACKEND_FILE}"
 )
 file(GLOB HEADER_FILES "${IMGUI_DIR}/*.h")
@@ -58,3 +59,4 @@ install(
 )
 install(FILES ${HEADER_FILES} DESTINATION include)
 install(FILES ${HEADER_BACKEND_FILES} DESTINATION include)
+install(FILES ${IMGUI_DIR}/misc/cpp/imgui_stdlib.h DESTINATION include)
