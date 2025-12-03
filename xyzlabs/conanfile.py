@@ -5,7 +5,7 @@ from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
 
 class XYZLabs(ConanFile):
     name = "xyzlabs"
-    version = "2.0.0"
+    version = "3.0.0"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/janetatomas1/xyzlabs"

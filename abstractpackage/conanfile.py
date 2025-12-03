@@ -20,7 +20,7 @@ class AbstractPackage(ConanFile):
             "xtensor/0.26.0",
             "pybind11/2.13.6",
             "ompl/1.7.0",
-            "xyzlabs/2.0.0",
+            "xyzlabs/3.0.0",
             "dataframe/3.6.0",
             "imgui/1.92.0",
             "implot/0.16.0",
@@ -36,7 +36,6 @@ class AbstractPackage(ConanFile):
         if self.settings.compiler == "gcc":
             deps.append("symengine/0.14.0")
             deps.append("opencv/4.12.0")
-            deps.append("bgfx/1.0.0")
         
         for d in deps:
             self.requires(d)
