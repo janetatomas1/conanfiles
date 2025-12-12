@@ -1,7 +1,7 @@
-
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import get
+
 
 class AbstractPackage(ConanFile):
     name = "abstractpackage"
@@ -18,7 +18,7 @@ class AbstractPackage(ConanFile):
             "spdlog/1.15.3",
             "boost/1.88.0",
             "xtensor/0.26.0",
-            "pybind11/2.13.6",
+            "pybind11/3.0.1",
             "ompl/1.7.0",
             "xyzlabs/3.0.0",
             "dataframe/3.6.0",
@@ -32,11 +32,11 @@ class AbstractPackage(ConanFile):
             "pocketfft/0.0.0.cci.20240801",
             "sdl/3.2.22",
         ]
-        
+
         if self.settings.compiler == "gcc":
             deps.append("symengine/0.14.0")
             deps.append("opencv/4.12.0")
-        
+
         for d in deps:
             self.requires(d)
 
