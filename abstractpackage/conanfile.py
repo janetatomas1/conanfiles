@@ -31,11 +31,14 @@ class AbstractPackage(ConanFile):
             "gtest/1.17.0",
             "pocketfft/0.0.0.cci.20240801",
             "sdl/3.2.22",
+            "magnum/1.0.0"
         ]
 
         if self.settings.compiler == "gcc":
             deps.append("symengine/0.14.0")
             deps.append("opencv/4.12.0")
+            deps.append("open3d/0.19.0")
+            deps.append("bgfx/1.0.0")
 
         for d in deps:
             self.requires(d)
