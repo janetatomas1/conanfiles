@@ -1,7 +1,7 @@
 
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
-from conan.tools.files import get
+from conan.tools.files import replace_in_file
 
 
 class Magnum(ConanFile):
@@ -37,8 +37,7 @@ class Magnum(ConanFile):
         cmake = CMake(self)
         cmake.configure({
             "CMAKE_INSTALL_PREFIX": self.package_folder,
-            "CORRADE_BUILD_STATIC": "ON",
-            "MAGNUM_BUILD_STATIC": "ON",
+            "MAGNUM_WITH_GL": "ON"
         })
         
         self.run("cmake --build .", cwd=f"{self.build_folder}/corrade")
