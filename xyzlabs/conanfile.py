@@ -11,19 +11,9 @@ class XYZLabs(ConanFile):
     url = "https://github.com/janetatomas1/xyzlabs"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*", "include/*"
-    options = {
-        "window_backend": ["GLFW", "SDL"],
-    }
-    default_options = {
-        "window_backend": "GLFW",
-    }
 
     def requirements(self):
-        self.requires(
-            "imgui/1.92.0", options={
-                "window_backend": self.options.window_backend
-            }
-        )
+        self.requires("imgui/1.92.0")
 
         for r in [
             "glfw/3.4",
