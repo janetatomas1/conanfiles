@@ -11,7 +11,10 @@ class ImPlot3D(ConanFile):
     author = ""
     url = "https://github.com/epezent/implot"
     settings = "os", "compiler", "build_type", "arch"
-    exports_sources = "CMakeLists.txt"
+    exports_sources = [
+        "CMakeLists.txt",
+        "implotConfig.cmake.in"
+    ]
     requires = [
         "imgui/1.92.0"
     ]

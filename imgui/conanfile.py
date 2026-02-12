@@ -12,10 +12,11 @@ class ImGui(ConanFile):
     author = ""
     url = "https://github.com/ocornut/imgui"
     settings = "os", "compiler", "build_type", "arch"
-    exports_sources = "CMakeLists.txt"
-
-    def requirements(self):
-        self.requires("glfw/3.4")
+    exports_sources = [
+        "CMakeLists.txt",
+        "imguiConfig.cmake.in",
+    ]
+    requires = ["glfw/3.4"]
 
     def generate(self):
         tc = CMakeToolchain(self)
