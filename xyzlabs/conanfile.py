@@ -46,8 +46,6 @@ class XYZLabs(ConanFile):
             'CMAKE_CXX_COMPILER': "clang++",
             'CMAKE_C_COMPILER': 'clang'
         } if self.settings.compiler == "clang" else {}
-        variables["USE_GLFW"] = self.options.window_backend == "GLFW"
-        variables["USE_SDL"] = self.options.window_backend == "SDL"
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/{self.name}",
