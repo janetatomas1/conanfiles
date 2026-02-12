@@ -13,18 +13,9 @@ class ImGui(ConanFile):
     url = "https://github.com/ocornut/imgui"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "CMakeLists.txt"
-    options = {
-        "window_backend": ["GLFW", "SDL"],
-    }
-    default_options = {
-        "window_backend": "SDL",
-    }
 
     def requirements(self):
-        if self.options.window_backend == "GLFW":
-            self.requires("glfw/3.4")
-        else:
-            self.requires("sdl/3.2.22")
+        self.requires("glfw/3.4")
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -41,8 +32,6 @@ class ImGui(ConanFile):
             'CMAKE_C_COMPILER': 'clang'
         } if self.settings.compiler == "clang" else {}
         variables["IMGUI_DIR"] = pathlib.PureWindowsPath(f"{self.build_folder}/{self.name}-{self.version}").as_posix()
-        variables["USE_GLFW"] = self.options.window_backend == "GLFW"
-        variables["USE_SDL"] = self.options.window_backend == "SDL"
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/",
