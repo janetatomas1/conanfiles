@@ -46,21 +46,3 @@ install(
     RUNTIME DESTINATION bin
     INCLUDES DESTINATION include
 )
-install(
-    EXPORT imguiTargets
-    FILE imguiTargets.cmake
-    NAMESPACE imgui::
-    DESTINATION lib/cmake/imgui
-)
-
-include(CMakePackageConfigHelpers)
-
-configure_package_config_file(
-    imguiConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/imguiConfig.cmake
-    INSTALL_DESTINATION lib/cmake/imgui
-)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/imguiConfig.cmake
-    DESTINATION lib/cmake/imgui
-)

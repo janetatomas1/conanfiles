@@ -17,11 +17,22 @@ class ImGui(ConanFile):
         "imguiConfig.cmake.in",
     ]
     requires = ["glfw/3.4"]
+    package_type = "library"
+    options = {
+    "shared": [True, False],
+    "fPIC": [True, False],
+    }
+    default_options = {
+        "shared": False,
+        "fPIC": True,
+    }
 
     def generate(self):
         tc = CMakeToolchain(self)
         tc.generate()
+
         deps = CMakeDeps(self)
+        deps.configuration = "Release"
         deps.generate()
 
     def source(self):
@@ -47,3 +58,6 @@ class ImGui(ConanFile):
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
+
+    def package_info(self):
+        self.cpp_info.libs = ["imgui"]

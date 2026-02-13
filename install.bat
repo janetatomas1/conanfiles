@@ -6,6 +6,5 @@ conan export spdlog/
 conan export xyzlabs/
 conan export imgui/
 conan export implot/
-conan export implot3d/
 
 conan install abstractpackage/ --build=missing --output-folder=./third-party/gcc --deployer-folder=third-party/msvc --deployer=full_deploy --profile:all=%CD%/profiles/msvc
