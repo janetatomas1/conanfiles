@@ -1,8 +1,9 @@
+import pathlib
 
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import get
-import pathlib
+
 
 class ImGui(ConanFile):
     name = "imgui"
@@ -19,8 +20,8 @@ class ImGui(ConanFile):
     requires = ["glfw/3.4"]
     package_type = "library"
     options = {
-    "shared": [True, False],
-    "fPIC": [True, False],
+        "shared": [True, False],
+        "fPIC": [True, False],
     }
     default_options = {
         "shared": False,
@@ -32,22 +33,23 @@ class ImGui(ConanFile):
         tc.generate()
 
         deps = CMakeDeps(self)
-        deps.configuration = "Release"
         deps.generate()
 
     def source(self):
-        get(self, f'{self.url}/archive/refs/tags/v{self.version}.tar.gz')
+        get(self, f"{self.url}/archive/refs/tags/v{self.version}.tar.gz")
 
     def _configure_cmake(self):
-        variables = {
-            'CMAKE_CXX_COMPILER': "clang++",
-            'CMAKE_C_COMPILER': 'clang'
-        } if self.settings.compiler == "clang" else {}
-        variables["IMGUI_DIR"] = pathlib.PureWindowsPath(f"{self.build_folder}/{self.name}-{self.version}").as_posix()
+        variables = (
+            {"CMAKE_CXX_COMPILER": "clang++", "CMAKE_C_COMPILER": "clang"}
+            if self.settings.compiler == "clang"
+            else {}
+        )
+        variables["IMGUI_DIR"] = pathlib.PureWindowsPath(
+            f"{self.build_folder}/{self.name}-{self.version}"
+        ).as_posix()
         cmake = CMake(self)
         cmake.configure(
-            build_script_folder=f"{self.build_folder}/",
-            variables=variables
+            build_script_folder=f"{self.build_folder}/", variables=variables
         )
         return cmake
 
@@ -60,4 +62,5 @@ class ImGui(ConanFile):
         cmake.install()
 
     def package_info(self):
+        self.cpp_info.components["core"].libs = ["imgui"]
         self.cpp_info.libs = ["imgui"]
