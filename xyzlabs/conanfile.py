@@ -4,16 +4,14 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 
 class XYZLabs(ConanFile):
     name = "xyzlabs"
-    version = "3.0.0"
+    version = "4.4.0"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
-    url = "https://github.com/janetatomas1/xyzlabs"
+    url = "http://192.168.0.101:3000/tomas.janeta/xyzlabs.git"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*", "include/*"
 
     def requirements(self):
-        self.requires("imgui/1.92.0")
-
         for r in [
             "glfw/3.4",
             "spdlog/1.15.3",
@@ -22,9 +20,10 @@ class XYZLabs(ConanFile):
             "stb/cci.20240531",
             "nlohmann_json/3.11.3",
             "concurrentqueue/1.0.4",
+            "imgui/1.92.0",
             "glew/2.2.0",
         ]:
-            self.requires(r)
+            self.requires(r, transitive_headers=True)
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -44,6 +43,7 @@ class XYZLabs(ConanFile):
             if self.settings.compiler == "clang"
             else {}
         )
+        variables["WITH_TESTS"] = "OFF"
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/{self.name}", variables=variables
@@ -57,3 +57,8 @@ class XYZLabs(ConanFile):
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
+
+    def deploy(self):
+        self.copy("*", src="include", dst="include")
+        self.copy("*", src="lib", dst="lib")
+        self.copy_deps("*")
