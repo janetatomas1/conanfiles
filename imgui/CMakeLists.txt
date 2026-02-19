@@ -18,6 +18,8 @@ set(
 file(GLOB HEADER_FILES "${IMGUI_DIR}/*.h")
 file(GLOB HEADER_BACKEND_FILES "${IMGUI_BACKENDS_DIR}/*.h")
 
+find_package(glfw REQUIRED)
+
 add_library(
     imgui
     STATIC
@@ -26,7 +28,7 @@ add_library(
 target_link_libraries(
     imgui
     PUBLIC
-    glfw
+    glfw::glfw
 )
 target_include_directories(
     imgui
