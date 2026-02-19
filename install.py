@@ -13,7 +13,6 @@ def run(cmd):
 
 
 def main(package, compilers, deploy_directory, build_types):
-    print(deploy_directory)
     recipes = glob.glob("*/conanfile.py")
 
     for recipe in recipes:
@@ -35,7 +34,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--main", help="Main package")
-    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "clang"]
+    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc"]
     parser.add_argument(
         "--compilers", nargs="+", default=compilers, help="Compilers to use"
     )

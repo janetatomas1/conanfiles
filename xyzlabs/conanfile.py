@@ -7,7 +7,7 @@ class XYZLabs(ConanFile):
     version = "4.4.0"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
-    url = "http://192.168.0.101:3000/tomas.janeta/xyzlabs.git"
+    url = "https://github.com/janetatomas1/xyzlabs.git"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*", "include/*"
 
@@ -44,6 +44,8 @@ class XYZLabs(ConanFile):
             else {}
         )
         variables["WITH_TESTS"] = "OFF"
+        variables["WITH_EXAMPLES"] = "OFF"
+        variables["WITH_3D"] = "OFF"
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/{self.name}", variables=variables
@@ -57,6 +59,9 @@ class XYZLabs(ConanFile):
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
+
+    def package_info(self):
+        self.cpp_info.libs = ["xyzlabs"]
 
     def deploy(self):
         self.copy("*", src="include", dst="include")
