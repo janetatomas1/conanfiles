@@ -39,7 +39,8 @@ class GLFW(ConanFile):
         )
         cmake = CMake(self)
         cmake.configure(
-            build_script_folder=f"{self.build_folder}/{self.name}-{self.version}", variables=variables
+            build_script_folder=f"{self.build_folder}/{self.name}-{self.version}",
+            variables=variables
         )
         return cmake
 
