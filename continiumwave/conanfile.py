@@ -11,7 +11,7 @@ class ContiniumWave(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*", "include/*"
     requires = [
-        "xyzlabs/4.4.0",
+        "xyzlabs/5.0.0",
         "xtensor/0.26.0",
         "stb/cci.20240531",
     ]

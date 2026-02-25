@@ -4,7 +4,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 
 class XYZLabs(ConanFile):
     name = "xyzlabs"
-    version = "4.4.0"
+    version = "5.0.0"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/janetatomas1/xyzlabs.git"
@@ -22,6 +22,7 @@ class XYZLabs(ConanFile):
             "concurrentqueue/1.0.4",
             "imgui/1.92.0",
             "glew/2.2.0",
+            "gtest/1.17.0",
         ]:
             self.requires(r, transitive_headers=True)
 

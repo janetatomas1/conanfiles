@@ -12,7 +12,7 @@ def run(cmd):
         raise RuntimeError(f"Command failed: {cmd}")
 
 
-def main(package, compilers, deploy_directory, build_types):
+def main(package, compilers, deploy_directory, build_types, jobs):
     recipes = glob.glob("*/conanfile.py")
 
     for recipe in recipes:
@@ -26,7 +26,8 @@ def main(package, compilers, deploy_directory, build_types):
                 f"--settings build_type={build_type} "
                 f"--output-folder={deploy_directory}/{compiler}/{build_type.lower()} "
                 f"--deployer=full_deploy "
-                f"--profile:all={os.getcwd()}/profiles/{compiler}"
+                f"--profile:all={os.getcwd()}/profiles/{compiler} "
+                f"-c tools.build:jobs={jobs}"
             )
 
 
@@ -47,6 +48,13 @@ if __name__ == "__main__":
         default=["Release", "Debug"],
         help="Build types to build",
     )
+    parser.add_argument("--jobs", default=8, help="Number of parallel jobs")
     args = parser.parse_args()
 
-    main(args.main, args.compilers, args.deploy_directory, args.build_types)
+    main(
+        args.main,
+        args.compilers,
+        args.deploy_directory,
+        args.build_types,
+        args.jobs
+    )
