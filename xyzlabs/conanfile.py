@@ -23,7 +23,6 @@ class XYZLabs(ConanFile):
             "imgui/1.92.0",
             "glew/2.2.0",
             "gtest/1.17.0",
-            "opencv/4.12.0",
         ]:
             self.requires(r, transitive_headers=True)
 
