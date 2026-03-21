@@ -14,6 +14,12 @@ class AbstractPackage(ConanFile):
         "opencv/4.12.0",
     ]
 
+    def generate(self):
+        tc = CMakeToolchain(self)
+        tc.generate()
+        deps = CMakeDeps(self)
+        deps.generate()
+
     def source(self):
         pass
 
