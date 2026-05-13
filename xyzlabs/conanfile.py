@@ -23,6 +23,7 @@ class XYZLabs(ConanFile):
             "imgui/1.92.0",
             "glew/2.2.0",
             "gtest/1.17.0",
+            "glbinding/3.5.0"
         ]:
             self.requires(r, transitive_headers=True)
 
