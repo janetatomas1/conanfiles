@@ -26,6 +26,12 @@ target_link_libraries(
     imgui::imgui
 )
 
+if(MSVC)
+  target_compile_options(implot PRIVATE /O2)
+else()
+  target_compile_options(implot PRIVATE -O3)
+endif()
+
 install(FILES ${HEADERS} DESTINATION include)
 install(
     TARGETS implot

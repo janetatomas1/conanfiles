@@ -16,12 +16,11 @@ class XYZLabs(ConanFile):
             "glfw/3.4",
             "spdlog/1.15.3",
             "boost/1.88.0",
-            "implot/0.16.0",
+            "implot/1.0",
             "stb/cci.20240531",
             "nlohmann_json/3.11.3",
             "concurrentqueue/1.0.4",
             "imgui/1.92.0",
-            "glew/2.2.0",
             "gtest/1.17.0",
             "glbinding/3.5.0"
         ]:

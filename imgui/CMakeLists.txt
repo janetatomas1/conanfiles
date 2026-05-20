@@ -25,6 +25,13 @@ add_library(
     STATIC
     ${IMGUI_SOURCES}
 )
+
+if(MSVC)
+  target_compile_options(imgui PRIVATE /O2)
+else()
+  target_compile_options(imgui PRIVATE -O3)
+endif()
+
 target_link_libraries(
     imgui
     PUBLIC
