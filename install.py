@@ -23,7 +23,14 @@ def run(cmd):
         raise RuntimeError(f"Command failed: {cmd}")
 
 
-def main(package, compilers, deploy_directory, build_types, jobs):
+def main(
+    package,
+    compilers,
+    deploy_directory,
+    build_types,
+    jobs,
+    optimalizations
+):
     recipes = glob.glob("*/conanfile.py")
 
     for recipe in recipes:
@@ -34,6 +41,11 @@ def main(package, compilers, deploy_directory, build_types, jobs):
             build_vars = f'tools.build:vars=["-DCMAKE_TOOLCHAIN_FILE={find_emscripten_cmake()}", "-DCMAKE_CROSSCOMPILING_EMULATOR={find_node()}"]'
 
         for build_type in build_types:
+            optimalizations_flags = ""
+            if optimalizations is not None:
+                if compiler != "msvc":
+                    optimalizations_flags = f" -c tools.build:cxxflags+=-{optimalizations} -c tools.build:cxxflags+=-{optimalizations}"
+                
             run(
                 f"conan install {package} "
                 f"--build=missing "
@@ -42,6 +54,7 @@ def main(package, compilers, deploy_directory, build_types, jobs):
                 f"--deployer=full_deploy "
                 f"--profile:all={os.getcwd()}/profiles/{compiler} "
                 f"-c tools.build:jobs={jobs}"
+                f"{optimalizations_flags}"
             )
 
 
@@ -49,7 +62,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--main", help="Main package")
-    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "clang", "emscripten"]
+    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "emscripten"]
     parser.add_argument(
         "--compilers", nargs="+", default=compilers, help="Compilers to use"
     )
@@ -62,7 +75,10 @@ if __name__ == "__main__":
         default=["Release", "Debug"],
         help="Build types to build",
     )
-    parser.add_argument("--jobs", default=8, help="Number of parallel jobs")
+
+    parser.add_argument("--optimalizations", default="O2", help="Level of compiler optimizations")
+
+    parser.add_argument("--jobs", default=None, help="Number of parallel jobs")
     args = parser.parse_args()
 
     main(
@@ -70,5 +86,6 @@ if __name__ == "__main__":
         args.compilers,
         args.deploy_directory,
         args.build_types,
-        args.jobs
+        args.jobs,
+        args.optimalizations
     )
