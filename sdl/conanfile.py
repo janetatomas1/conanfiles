@@ -1,17 +1,16 @@
-
 from conan import ConanFile
-from conan.tools.cmake import CMake, CMakeToolchain, CMakeDeps
+from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import get
 
 
-class Spdlog(ConanFile):
-    name = "spdlog"
-    version = "1.15.3"
-    license = "MIT"
+class SDL(ConanFile):
+    name = "sdl"
+    version = "3.4.14"
+    license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
-    url = "https://github.com/gabime/spdlog"
+    url = "https://github.com/libsdl-org/SDL/"
     settings = "os", "compiler", "build_type", "arch"
-    requires = ["fmt/11.1.3"]
+    exports_sources = "src/*", "include/*"
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -20,17 +19,12 @@ class Spdlog(ConanFile):
         deps.generate()
 
     def source(self):
-        get(self, f"{self.url}/archive/refs/tags/v{self.version}.zip")
+        get(self, f"{self.url}/releases/download/release-{self.version}/SDL3-{self.version}.tar.gz")
 
     def _configure_cmake(self):
-        variables = {
-            'CMAKE_CXX_COMPILER': "clang++",
-            'CMAKE_C_COMPILER': 'clang'
-        } if self.settings.compiler == "clang" else {}
         cmake = CMake(self)
         cmake.configure(
-            build_script_folder=f"{self.build_folder}/{self.name}-{self.version}",
-            variables=variables
+            build_script_folder=f"SDL3-3.4.14"
         )
         return cmake
 
@@ -41,3 +35,11 @@ class Spdlog(ConanFile):
     def package(self):
         cmake = self._configure_cmake()
         cmake.install()
+
+    def package_info(self):
+        self.cpp_info.libs = ["xyzlabs"]
+
+    def deploy(self):
+        self.copy("*", src="include", dst="include")
+        self.copy("*", src="lib", dst="lib")
+        self.copy_deps("*")

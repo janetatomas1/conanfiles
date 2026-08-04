@@ -27,14 +27,7 @@ class ImPlot3D(ConanFile):
         )
 
     def _configure_cmake(self):
-        variables = (
-            {"CMAKE_CXX_COMPILER": "clang++", "CMAKE_C_COMPILER": "clang"}
-            if self.settings.compiler == "clang"
-            else {}
-        )
-        variables["IMPLOT_DIR"] = pathlib.PureWindowsPath(
-            f"{self.build_folder}/{self.name}"
-        ).as_posix()
+        variables = {"IMPLOT_DIR": pathlib.PureWindowsPath(f"{self.build_folder}/{self.name}").as_posix()}
         cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/", variables=variables

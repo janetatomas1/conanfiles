@@ -32,15 +32,9 @@ class GLFW(ConanFile):
         get(self, f"{self.url}/archive/refs/tags/{self.version}.tar.gz")
 
     def _configure_cmake(self):
-        variables = (
-            {"CMAKE_CXX_COMPILER": "clang++", "CMAKE_C_COMPILER": "clang"}
-            if self.settings.compiler == "clang"
-            else {}
-        )
         cmake = CMake(self)
         cmake.configure(
-            build_script_folder=f"{self.build_folder}/{self.name}-{self.version}",
-            variables=variables
+            build_script_folder=f"{self.build_folder}/{self.name}-{self.version}"
         )
         return cmake
 

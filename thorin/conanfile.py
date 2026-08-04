@@ -13,7 +13,7 @@ class Thorin(ConanFile):
 
     def requirements(self):
         for r in [
-            "sdl/3.4.8",
+            "sdl/3.4.14",
             "spdlog/1.15.3",
             "implot/1.0",
             "stb/cci.20240531",
@@ -39,17 +39,8 @@ class Thorin(ConanFile):
         )
 
     def _configure_cmake(self):
-        variables = (
-            {"CMAKE_CXX_COMPILER": "clang++", "CMAKE_C_COMPILER": "clang"}
-            if self.settings.compiler == "clang"
-            else {}
-        )
-        variables["WITH_TESTS"] = "OFF"
-        variables["WITH_EXAMPLES"] = "OFF"
-        variables["WITH_3D"] = "OFF"
-        cmake = CMake(self)
         cmake.configure(
-            build_script_folder=f"{self.build_folder}/{self.name}", variables=variables
+            build_script_folder=f"{self.build_folder}/{self.name}"
         )
         return cmake
 
