@@ -13,9 +13,8 @@ class XYZLabs(ConanFile):
 
     def requirements(self):
         for r in [
-            "glfw/3.4",
+            "sdl/3.4.8",
             "spdlog/1.15.3",
-            "boost/1.88.0",
             "implot/1.0",
             "stb/cci.20240531",
             "nlohmann_json/3.11.3",

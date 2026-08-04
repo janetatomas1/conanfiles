@@ -3,6 +3,17 @@ import glob
 import os
 import platform
 import shutil
+from pathlib import Path
+
+
+def find_emscripten_cmake():
+    emsdk_root = os.environ['EMSDK']
+
+    return next(Path(emsdk_root).rglob("Emscripten.cmake"))
+
+
+def find_node():
+    return shutil.which("node")
 
 
 def run(cmd):
@@ -19,6 +30,9 @@ def main(package, compilers, deploy_directory, build_types, jobs):
         run(f"conan export {recipe}/")
 
     for compiler in compilers:
+        if compiler == "emscripten":
+            build_vars = f'tools.build:vars=["-DCMAKE_TOOLCHAIN_FILE={find_emscripten_cmake()}", "-DCMAKE_CROSSCOMPILING_EMULATOR={find_node()}"]'
+
         for build_type in build_types:
             run(
                 f"conan install {package} "
@@ -35,7 +49,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--main", help="Main package")
-    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc"]
+    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "clang", "emscripten"]
     parser.add_argument(
         "--compilers", nargs="+", default=compilers, help="Compilers to use"
     )
