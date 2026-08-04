@@ -37,7 +37,7 @@ class SDL(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["xyzlabs"]
+        self.cpp_info.libs = ["sdl"]
 
     def deploy(self):
         self.copy("*", src="include", dst="include")

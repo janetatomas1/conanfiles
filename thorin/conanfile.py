@@ -34,7 +34,7 @@ class Thorin(ConanFile):
 
     def source(self):
         self.run(
-            f"git clone git@github.com:janetatomas1/xyzlabs.git --recursive && cd xyzlabs && git checkout {self.version}",
+            f"git clone {self.url} --recursive && cd xyzlabs && git checkout {self.version}",
             cwd=self.source_folder,
         )
 
