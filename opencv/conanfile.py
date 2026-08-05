@@ -5,7 +5,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import get
 
 
-class XYZLabs(ConanFile):
+class OpenCV(ConanFile):
     name = "opencv"
     version = "4.12.0"
     url = "https://github.com/opencv/opencv"

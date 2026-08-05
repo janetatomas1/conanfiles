@@ -17,7 +17,7 @@ class ImGui(ConanFile):
         "CMakeLists.txt",
         "imguiConfig.cmake.in",
     ]
-    requires = ["glfw/3.4"]
+    requires = ["sdl/3.4.14"]
     package_type = "library"
     options = {
         "shared": [True, False],

@@ -13,12 +13,12 @@ set(
     "${IMGUI_DIR}/imgui_widgets.cpp"
     "${IMGUI_DIR}/misc/cpp/imgui_stdlib.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp"
-    "${IMGUI_BACKENDS_DIR}/imgui_impl_glfw.cpp"
+    "${IMGUI_BACKENDS_DIR}/imgui_impl_sdl3.cpp"
 )
 file(GLOB HEADER_FILES "${IMGUI_DIR}/*.h")
 file(GLOB HEADER_BACKEND_FILES "${IMGUI_BACKENDS_DIR}/*.h")
 
-find_package(glfw REQUIRED)
+find_package(sdl REQUIRED)
 
 add_library(
     imgui
@@ -35,8 +35,9 @@ endif()
 target_link_libraries(
     imgui
     PUBLIC
-    glfw::glfw
+    sdl::sdl
 )
+
 target_include_directories(
     imgui
     PUBLIC
