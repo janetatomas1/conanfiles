@@ -13,6 +13,8 @@ class Thorin(ConanFile):
 
     def requirements(self):
         for r in [
+            "yoga/3.2.0",
+            "function2/4.2.5",
             "sdl/3.4.14",
             "spdlog/1.15.3",
             "implot/1.0",
@@ -22,7 +24,8 @@ class Thorin(ConanFile):
             "imgui/1.92.0",
             "gtest/1.17.0",
             "glbinding/3.5.0",
-            "opengl/system"
+            "opengl/system",
+            "libassert/2.2.1",
         ]:
             self.requires(r, transitive_headers=True)
 
