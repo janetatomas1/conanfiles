@@ -8,7 +8,7 @@ from conan.tools.files import get
 class ImGui(ConanFile):
     name = "imgui"
     commit = "68818c1388515eb986227ed44ef03385f86a5d4a"
-    version = "1.92.0"
+    version = "1.92.9b-docking"
     license = ""
     author = ""
     url = "https://github.com/ocornut/imgui"

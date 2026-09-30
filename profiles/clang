@@ -8,3 +8,4 @@ compiler.libcxx=libstdc++
 
 [conf]
 tools.cmake.cmaketoolchain:extra_variables={'CMAKE_CXX_COMPILER': 'clang++', 'CMAKE_C_COMPILER': 'clang'}
+tools.cmake.cmaketoolchain:generator=Ninja
