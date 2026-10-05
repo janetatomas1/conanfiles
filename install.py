@@ -41,10 +41,11 @@ def main(
             build_vars = f'tools.build:vars=["-DCMAKE_TOOLCHAIN_FILE={find_emscripten_cmake()}", "-DCMAKE_CROSSCOMPILING_EMULATOR={find_node()}"]'
 
         for build_type in build_types:
+            jobs_flags = f" -c tools.build:jobs={jobs}" if jobs is not None else ""
             optimalizations_flags = ""
             if optimalizations is not None:
                 if compiler != "msvc":
-                    optimalizations_flags = f" -c tools.build:cxxflags+=-{optimalizations} -c tools.build:cxxflags+=-{optimalizations}"
+                    optimalizations_flags = f" -c tools.build:cxxflags+=-{optimalizations}"
                 
             run(
                 f"conan install {package} "
@@ -53,7 +54,7 @@ def main(
                 f"--output-folder={deploy_directory}/{compiler}/{build_type.lower()} "
                 f"--deployer=full_deploy "
                 f"--profile:all={os.getcwd()}/profiles/{compiler} "
-                f"-c tools.build:jobs={jobs}"
+                f"{jobs_flags}"
                 f"{optimalizations_flags}"
             )
 

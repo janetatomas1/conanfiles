@@ -26,6 +26,7 @@ class Thorin(ConanFile):
             "glbinding/3.5.0",
             "opengl/system",
             "libassert/2.2.1",
+            "globjects/2.0.0",
         ]:
             self.requires(r, transitive_headers=True)
 
