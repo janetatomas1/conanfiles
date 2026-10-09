@@ -6,7 +6,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 
 class ImPlot3D(ConanFile):
     name = "implot"
-    commit = "3da8bd34299965d3b0ab124df743fe3e076fa222"
+    commit = "09e2ba71766e25d88053a2173936c9d1043bae42"
     version = "1.0"
     license = ""
     author = ""

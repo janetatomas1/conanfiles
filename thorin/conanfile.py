@@ -18,6 +18,7 @@ class Thorin(ConanFile):
             "sdl/3.4.14",
             "spdlog/1.15.3",
             "implot/1.0",
+            "implot3d/1.0",
             "stb/cci.20240531",
             "nlohmann_json/3.11.3",
             "concurrentqueue/1.0.4",
