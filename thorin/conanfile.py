@@ -4,7 +4,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 
 class Thorin(ConanFile):
     name = "thorin"
-    version = "0.2"
+    version = "0.2.0"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/janetatomas1/thorin.git"
@@ -44,6 +44,7 @@ class Thorin(ConanFile):
         )
 
     def _configure_cmake(self):
+        cmake = CMake(self)
         cmake.configure(
             build_script_folder=f"{self.build_folder}/{self.name}"
         )

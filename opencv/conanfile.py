@@ -14,6 +14,8 @@ class OpenCV(ConanFile):
     requires = []
 
     def generate(self):
+        # System zlib-ng CMake config may reference a missing libz.a; use Find modules instead
+        self.conf.define("tools.cmake.cmaketoolchain:find_package_prefer_config", False)
         tc = CMakeToolchain(self)
         tc.generate()
         deps = CMakeDeps(self)
