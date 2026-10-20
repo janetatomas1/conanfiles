@@ -47,7 +47,8 @@ def main(
     for recipe in recipes:
         run(f"conan export {recipe}")
 
-    target = package if package is not None else all_requires(recipes)
+    # A bare --requires install has no conanfile generate(), so request the generators explicitly
+    target = package if package is not None else f"{all_requires(recipes)} -g CMakeToolchain -g CMakeDeps"
 
     for compiler in compilers:
         if compiler == "emscripten":
