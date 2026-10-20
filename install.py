@@ -1,8 +1,10 @@
 import argparse
 import glob
+import json
 import os
 import platform
 import shutil
+import subprocess
 from pathlib import Path
 
 
@@ -23,6 +25,15 @@ def run(cmd):
         raise RuntimeError(f"Command failed: {cmd}")
 
 
+def all_requires(recipes):
+    requires = []
+    for recipe in recipes:
+        out = subprocess.check_output(["conan", "inspect", recipe, "--format=json"], text=True)
+        info = json.loads(out)
+        requires.append(f"--requires={info['name']}/{info['version']}")
+    return " ".join(requires)
+
+
 def main(
     package,
     compilers,
@@ -34,7 +45,9 @@ def main(
     recipes = glob.glob("*/conanfile.py")
 
     for recipe in recipes:
-        run(f"conan export {recipe}/")
+        run(f"conan export {recipe}")
+
+    target = package if package is not None else all_requires(recipes)
 
     for compiler in compilers:
         if compiler == "emscripten":
@@ -48,7 +61,7 @@ def main(
                     optimalizations_flags = f" -c tools.build:cxxflags+=-{optimalizations}"
                 
             run(
-                f"conan install {package} "
+                f"conan install {target} "
                 f"--build=missing "
                 f"--settings build_type={build_type} "
                 f"--output-folder={deploy_directory}/{compiler}/{build_type.lower()} "
@@ -62,7 +75,7 @@ def main(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--main", help="Main package")
+    parser.add_argument("--main", help="Main package (if omitted, all packages are deployed)")
     compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "clang"]
     parser.add_argument(
         "--compilers", nargs="+", default=compilers, help="Compilers to use"

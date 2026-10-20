@@ -4,7 +4,7 @@ from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 
 class Thorin(ConanFile):
     name = "thorin"
-    version = "5.0.0"
+    version = "0.2"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/janetatomas1/thorin.git"
@@ -39,7 +39,7 @@ class Thorin(ConanFile):
 
     def source(self):
         self.run(
-            f"git clone {self.url} --recursive && cd xyzlabs && git checkout {self.version}",
+            f"git clone {self.url} --recursive && cd thorin && git checkout {self.version}",
             cwd=self.source_folder,
         )
 
@@ -58,7 +58,7 @@ class Thorin(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["xyzlabs"]
+        self.cpp_info.libs = ["thorin"]
 
     def deploy(self):
         self.copy("*", src="include", dst="include")
