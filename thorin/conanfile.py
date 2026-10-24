@@ -16,7 +16,7 @@ class Thorin(ConanFile):
             "yoga/3.2.0",
             "function2/4.2.5",
             "sdl/3.4.14",
-            "spdlog/1.15.3",
+            "spdlog/1.17.0",
             "implot/1.0",
             "implot3d/1.0",
             "stb/cci.20240531",
@@ -26,10 +26,13 @@ class Thorin(ConanFile):
             "gtest/1.17.0",
             "glbinding/3.5.0",
             "opengl/system",
-            "libassert/2.2.1",
             "globjects/2.0.0",
         ]:
             self.requires(r, transitive_headers=True)
+
+        # libassert depends on cpptrace, which does not support Emscripten
+        if self.settings.os != "Emscripten":
+            self.requires("libassert/2.2.1", transitive_headers=True)
 
     def generate(self):
         tc = CMakeToolchain(self)

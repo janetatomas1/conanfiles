@@ -14,6 +14,7 @@ set(
     "${IMGUI_DIR}/misc/cpp/imgui_stdlib.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_sdl3.cpp"
+    "${IMGUI_BACKENDS_DIR}/imgui_impl_sdlgpu3.cpp"
 )
 file(GLOB HEADER_FILES "${IMGUI_DIR}/*.h")
 file(GLOB HEADER_BACKEND_FILES "${IMGUI_BACKENDS_DIR}/*.h")

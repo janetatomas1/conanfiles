@@ -51,8 +51,18 @@ def main(
     target = package if package is not None else f"{all_requires(recipes)} -g CMakeToolchain -g CMakeDeps"
 
     for compiler in compilers:
+        toolchain_flags = ""
+        profile_flags = f"--profile:all={os.getcwd()}/profiles/{compiler} "
         if compiler == "emscripten":
-            build_vars = f'tools.build:vars=["-DCMAKE_TOOLCHAIN_FILE={find_emscripten_cmake()}", "-DCMAKE_CROSSCOMPILING_EMULATOR={find_node()}"]'
+            # Native build profile so Conan knows it is cross-building (and lets find_package see its deps)
+            profile_flags = (
+                f"--profile:host={os.getcwd()}/profiles/emscripten "
+                f"--profile:build={os.getcwd()}/profiles/gcc "
+            )
+            toolchain_flags = (
+                f""" -c tools.cmake.cmaketoolchain:user_toolchain="['{find_emscripten_cmake()}']\""""
+                f""" -c tools.cmake.cmaketoolchain:extra_variables="{{'CMAKE_CROSSCOMPILING_EMULATOR': '{find_node()}'}}\""""
+            )
 
         for build_type in build_types:
             jobs_flags = f" -c tools.build:jobs={jobs}" if jobs is not None else ""
@@ -67,9 +77,10 @@ def main(
                 f"--settings build_type={build_type} "
                 f"--output-folder={deploy_directory}/{compiler}/{build_type.lower()} "
                 f"--deployer=full_deploy "
-                f"--profile:all={os.getcwd()}/profiles/{compiler} "
+                f"{profile_flags}"
                 f"{jobs_flags}"
                 f"{optimalizations_flags}"
+                f"{toolchain_flags}"
             )
 
 
@@ -77,7 +88,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--main", help="Main package (if omitted, all packages are deployed)")
-    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "clang"]
+    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "clang", "emscripten"]
     parser.add_argument(
         "--compilers", nargs="+", default=compilers, help="Compilers to use"
     )

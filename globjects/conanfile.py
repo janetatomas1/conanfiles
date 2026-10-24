@@ -19,10 +19,11 @@ class GLObjects(ConanFile):
         "shared": False,
         "fPIC": True,
     }
-    requires = [
-        "glbinding/3.5.0",
-        "glm/1.0.1",
-    ]
+
+    def requirements(self):
+        # globjects' public headers include glbinding and glm.
+        self.requires("glbinding/3.5.0", transitive_headers=True)
+        self.requires("glm/1.0.1", transitive_headers=True)
 
     def generate(self):
         tc = CMakeToolchain(self)
