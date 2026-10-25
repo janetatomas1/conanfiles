@@ -27,12 +27,26 @@ class Thorin(ConanFile):
             "glbinding/3.5.0",
             "opengl/system",
             "globjects/2.0.0",
+            "dawn/20261023.194543",
+            "sdl3webgpu/1.0",
         ]:
             self.requires(r, transitive_headers=True)
 
         # libassert depends on cpptrace, which does not support Emscripten
         if self.settings.os != "Emscripten":
             self.requires("libassert/2.2.1", transitive_headers=True)
+
+        # Vulkan is not available on Emscripten
+        if self.settings.os != "Emscripten":
+            # vulkan-headers also ships vulkan-hpp (vulkan/vulkan.hpp)
+            # force: vk-bootstrap/1.4.350 pins vulkan-headers/1.4.350.0
+            self.requires("vulkan-headers/1.4.357.0", transitive_headers=True, force=True)
+            for r in [
+                "volk/1.4.357.0",
+                "vk-bootstrap/1.4.350",
+                "vulkan-memory-allocator/3.3.0",
+            ]:
+                self.requires(r, transitive_headers=True)
 
     def generate(self):
         tc = CMakeToolchain(self)

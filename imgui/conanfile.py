@@ -28,6 +28,9 @@ class ImGui(ConanFile):
         "fPIC": True,
     }
 
+    def requirements(self):
+        self.requires("dawn/20261023.194543", transitive_headers=True)
+
     def generate(self):
         tc = CMakeToolchain(self)
         tc.generate()
@@ -57,3 +60,4 @@ class ImGui(ConanFile):
     def package_info(self):
         self.cpp_info.components["core"].libs = ["imgui"]
         self.cpp_info.libs = ["imgui"]
+        self.cpp_info.defines = ["IMGUI_IMPL_WEBGPU_BACKEND_DAWN"]

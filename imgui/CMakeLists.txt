@@ -15,11 +15,13 @@ set(
     "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_sdl3.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_sdlgpu3.cpp"
+    "${IMGUI_BACKENDS_DIR}/imgui_impl_wgpu.cpp"
 )
 file(GLOB HEADER_FILES "${IMGUI_DIR}/*.h")
 file(GLOB HEADER_BACKEND_FILES "${IMGUI_BACKENDS_DIR}/*.h")
 
 find_package(sdl REQUIRED)
+find_package(Dawn REQUIRED)
 
 add_library(
     imgui
@@ -33,10 +35,18 @@ else()
   target_compile_options(imgui PRIVATE -O3)
 endif()
 
+if(APPLE)
+  set_source_files_properties("${IMGUI_BACKENDS_DIR}/imgui_impl_wgpu.cpp" PROPERTIES COMPILE_OPTIONS "-x;objective-c++")
+endif()
+
+# Dawn-style webgpu.h; also correct for Emscripten's emdawnwebgpu port
+target_compile_definitions(imgui PUBLIC IMGUI_IMPL_WEBGPU_BACKEND_DAWN)
+
 target_link_libraries(
     imgui
     PUBLIC
     sdl::sdl
+    dawn::webgpu_dawn
 )
 
 target_include_directories(
