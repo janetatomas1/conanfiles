@@ -39,6 +39,15 @@ if(APPLE)
   set_source_files_properties("${IMGUI_BACKENDS_DIR}/imgui_impl_wgpu.cpp" PROPERTIES COMPILE_OPTIONS "-x;objective-c++")
 endif()
 
+# Vulkan renderer, native only. Its functions are loaded at runtime (ImGui_ImplVulkan_LoadFunctions), so the
+# Vulkan loader isn't linked; the app loads it.
+if(NOT EMSCRIPTEN)
+  find_package(VulkanHeaders REQUIRED)
+  target_sources(imgui PRIVATE "${IMGUI_BACKENDS_DIR}/imgui_impl_vulkan.cpp")
+  target_compile_definitions(imgui PUBLIC IMGUI_IMPL_VULKAN_NO_PROTOTYPES)
+  target_link_libraries(imgui PUBLIC vulkan-headers::vulkan-headers)
+endif()
+
 # Dawn-style webgpu.h; also correct for Emscripten's emdawnwebgpu port
 target_compile_definitions(imgui PUBLIC IMGUI_IMPL_WEBGPU_BACKEND_DAWN)
 

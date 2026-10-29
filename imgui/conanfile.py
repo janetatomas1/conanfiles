@@ -30,6 +30,9 @@ class ImGui(ConanFile):
 
     def requirements(self):
         self.requires("dawn/20261023.194543", transitive_headers=True)
+        # imgui_impl_vulkan; same version thorin forces (vk-bootstrap pins an older one)
+        if self.settings.os != "Emscripten":
+            self.requires("vulkan-headers/1.4.357.0", transitive_headers=True, force=True)
 
     def generate(self):
         tc = CMakeToolchain(self)
@@ -61,3 +64,5 @@ class ImGui(ConanFile):
         self.cpp_info.components["core"].libs = ["imgui"]
         self.cpp_info.libs = ["imgui"]
         self.cpp_info.defines = ["IMGUI_IMPL_WEBGPU_BACKEND_DAWN"]
+        if self.settings.os != "Emscripten":
+            self.cpp_info.defines.append("IMGUI_IMPL_VULKAN_NO_PROTOTYPES")
