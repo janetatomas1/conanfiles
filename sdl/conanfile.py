@@ -10,6 +10,9 @@ class SDL(ConanFile):
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/libsdl-org/SDL/"
     settings = "os", "compiler", "build_type", "arch"
+    # SDL3 builds a shared library by default. Declaring it lets CMakeDeps point the
+    # target at SDL3.dll on Windows, so consumers can copy it with $<TARGET_RUNTIME_DLLS>.
+    package_type = "shared-library"
     exports_sources = "src/*", "include/*"
 
     def generate(self):
