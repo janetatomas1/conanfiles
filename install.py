@@ -88,7 +88,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--main", help="Main package (if omitted, all packages are deployed)")
-    compilers = ["msvc"] if platform.system() == "Windows" else ["gcc", "clang", "emscripten"]
+    compilers = ["msvc", "clang-cl"] if platform.system() == "Windows" else ["gcc", "clang", "emscripten"]
     parser.add_argument(
         "--compilers", nargs="+", default=compilers, help="Compilers to use"
     )

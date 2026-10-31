@@ -1,0 +1,12 @@
+[settings]
+arch=x86_64
+compiler=clang
+compiler.cppstd=23
+compiler.runtime=dynamic
+compiler.runtime_version=v145
+compiler.version=22
+os=Windows
+
+[conf]
+tools.build:compiler_executables={'c': 'clang-cl', 'cpp': 'clang-cl'}
+tools.cmake.cmaketoolchain:generator=Ninja
