@@ -27,7 +27,8 @@ target_link_libraries(
 )
 
 if(MSVC)
-  target_compile_options(implot3d PRIVATE /O2)
+  # not in Debug: /O2 can't be combined with CMake's default /RTC1
+  target_compile_options(implot3d PRIVATE $<$<NOT:$<CONFIG:Debug>>:/O2>)
 else()
   target_compile_options(implot3d PRIVATE -O3)
 endif()

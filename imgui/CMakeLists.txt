@@ -30,7 +30,8 @@ add_library(
 )
 
 if(MSVC)
-  target_compile_options(imgui PRIVATE /O2)
+  # not in Debug: /O2 can't be combined with CMake's default /RTC1
+  target_compile_options(imgui PRIVATE $<$<NOT:$<CONFIG:Debug>>:/O2>)
 else()
   target_compile_options(imgui PRIVATE -O3)
 endif()
