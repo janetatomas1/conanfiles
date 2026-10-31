@@ -1,6 +1,8 @@
+import os
+
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
-from conan.tools.files import get
+from conan.tools.files import get, replace_in_file
 
 
 class GTest(ConanFile):
@@ -26,6 +28,14 @@ class GTest(ConanFile):
         return cmake
 
     def build(self):
+        # googletest builds with warnings as errors on msvc and clang-cl, so new
+        # compiler warnings in its own headers break the build
+        replace_in_file(
+            self,
+            os.path.join(self.source_folder, "googletest", "cmake", "internal_utils.cmake"),
+            "-GS -W4 -WX",
+            "-GS -W4",
+        )
         cmake = self._configure_cmake()
         cmake.build()
 
