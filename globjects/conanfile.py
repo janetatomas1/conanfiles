@@ -1,3 +1,5 @@
+import os
+
 from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 from conan.tools.files import get
@@ -24,9 +26,15 @@ class GLObjects(ConanFile):
         # globjects' public headers include glbinding and glm.
         self.requires("glbinding/3.5.0", transitive_headers=True)
         self.requires("glm/1.0.1", transitive_headers=True)
+        # glbinding's headers include KHR/khrplatform.h but its package doesn't
+        # expose it; linux finds the system copy, windows has none.
+        self.requires("khrplatform/cci.20200529", transitive_headers=True)
 
     def generate(self):
         tc = CMakeToolchain(self)
+        # globjects' CMakeLists doesn't link khrplatform, so add its include dir directly
+        khr_include = os.path.join(self.dependencies["khrplatform"].package_folder, "include")
+        tc.cache_variables["CMAKE_CXX_STANDARD_INCLUDE_DIRECTORIES"] = khr_include.replace("\\", "/")
         tc.generate()
 
         deps = CMakeDeps(self)
