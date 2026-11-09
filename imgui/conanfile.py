@@ -30,7 +30,7 @@ class ImGui(ConanFile):
 
     def requirements(self):
         self.requires("dawn/20261023.194543", transitive_headers=True)
-        # imgui_impl_vulkan; same version thorin forces (vk-bootstrap pins an older one)
+        # imgui_impl_vulkan; same version ironcast forces (vk-bootstrap pins an older one)
         if self.settings.os != "Emscripten":
             self.requires("vulkan-headers/1.4.357.0", transitive_headers=True, force=True)
 

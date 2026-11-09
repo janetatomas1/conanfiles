@@ -2,9 +2,9 @@ from conan import ConanFile
 from conan.tools.cmake import CMake, CMakeDeps, CMakeToolchain
 
 
-class Thorin(ConanFile):
-    name = "thorin"
-    version = "0.2.0"
+class Ironcast(ConanFile):
+    name = "ironcast"
+    version = "0.4.0"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
     url = "https://github.com/janetatomas1/thorin.git"
@@ -56,7 +56,7 @@ class Thorin(ConanFile):
 
     def source(self):
         self.run(
-            f"git clone {self.url} --recursive && cd thorin && git checkout {self.version}",
+            f"git clone {self.url} {self.name} --recursive && cd {self.name} && git checkout {self.version}",
             cwd=self.source_folder,
         )
 
@@ -76,7 +76,7 @@ class Thorin(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.libs = ["thorin"]
+        self.cpp_info.libs = ["ironcast"]
 
     def deploy(self):
         self.copy("*", src="include", dst="include")
