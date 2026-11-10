@@ -7,7 +7,7 @@ class Ironcast(ConanFile):
     version = "0.4.0"
     license = "Proprietary"
     author = "Tomas Janeta tomas.janeta@proton.me>"
-    url = "https://github.com/janetatomas1/thorin.git"
+    url = "https://github.com/janetatomas1/ironcast.git"
     settings = "os", "compiler", "build_type", "arch"
     exports_sources = "src/*", "include/*"
 
