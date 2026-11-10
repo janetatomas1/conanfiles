@@ -22,6 +22,7 @@ option(IMGUI_OPENGL "Build imgui_impl_opengl3" ON)
 option(IMGUI_SDLGPU "Build imgui_impl_sdlgpu3" ON)
 option(IMGUI_WEBGPU "Build imgui_impl_wgpu" ON)
 option(IMGUI_VULKAN "Build imgui_impl_vulkan" ON)
+option(IMGUI_TEST_ENGINE "Build Dear ImGui Test Engine into the library" OFF)
 
 find_package(sdl REQUIRED)
 
@@ -61,6 +62,21 @@ if(IMGUI_VULKAN)
   target_sources(imgui PRIVATE "${IMGUI_BACKENDS_DIR}/imgui_impl_vulkan.cpp")
   target_compile_definitions(imgui PUBLIC IMGUI_IMPL_VULKAN_NO_PROTOTYPES)
   target_link_libraries(imgui PUBLIC vulkan-headers::vulkan-headers)
+endif()
+
+# Dear ImGui Test Engine, in the same library: imgui calls its hooks (IMGUI_ENABLE_TEST_ENGINE), and both have to
+# be built with the same defines. Its coroutines run on std::thread.
+if(IMGUI_TEST_ENGINE)
+  file(GLOB IMGUI_TEST_ENGINE_SOURCES "${IMGUI_TEST_ENGINE_DIR}/*.cpp")
+  file(GLOB IMGUI_TEST_ENGINE_HEADERS "${IMGUI_TEST_ENGINE_DIR}/*.h")
+  target_sources(imgui PRIVATE ${IMGUI_TEST_ENGINE_SOURCES})
+  target_compile_definitions(imgui PUBLIC IMGUI_ENABLE_TEST_ENGINE IMGUI_TEST_ENGINE_ENABLE_COROUTINE_STDTHREAD_IMPL=1)
+  target_include_directories(imgui PUBLIC $<BUILD_INTERFACE:${IMGUI_TEST_ENGINE_DIR}>)
+  find_package(Threads REQUIRED)
+  target_link_libraries(imgui PUBLIC Threads::Threads)
+  # Its headers include "imgui.h", so they go next to imgui's; the capture tool includes thirdparty/stb.
+  install(FILES ${IMGUI_TEST_ENGINE_HEADERS} DESTINATION include)
+  install(DIRECTORY ${IMGUI_TEST_ENGINE_DIR}/thirdparty DESTINATION include FILES_MATCHING PATTERN "*.h")
 endif()
 
 target_link_libraries(imgui PUBLIC sdl::sdl)

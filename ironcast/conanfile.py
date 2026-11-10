@@ -17,12 +17,15 @@ class Ironcast(ConanFile):
         "sdlgpu": [True, False],
         "webgpu": [True, False],
         "vulkan": [True, False],
+        # GUI tests with Dear ImGui Test Engine: builds imgui with it and sets IRONCAST_GUI_TESTS
+        "gui_tests": [True, False],
     }
     default_options = {
         "opengl": True,
         "sdlgpu": True,
         "webgpu": True,
         "vulkan": True,
+        "gui_tests": False,
     }
 
     def config_options(self):
@@ -36,6 +39,7 @@ class Ironcast(ConanFile):
         for backend in ["opengl", "sdlgpu", "webgpu", "vulkan"]:
             if self.options.get_safe(backend) is not None:
                 setattr(self.options["imgui"], backend, self.options.get_safe(backend))
+        self.options["imgui"].test_engine = self.options.gui_tests
 
     def requirements(self):
         for r in [
@@ -82,6 +86,7 @@ class Ironcast(ConanFile):
         tc.variables["IRONCAST_SDLGPU"] = bool(self.options.get_safe("sdlgpu"))
         tc.variables["IRONCAST_WEBGPU"] = bool(self.options.webgpu)
         tc.variables["IRONCAST_VULKAN"] = bool(self.options.get_safe("vulkan"))
+        tc.variables["IRONCAST_GUI_TESTS"] = bool(self.options.gui_tests)
         tc.generate()
         deps = CMakeDeps(self)
         deps.generate()

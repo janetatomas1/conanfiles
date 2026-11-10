@@ -25,6 +25,13 @@ def run(cmd):
         raise RuntimeError(f"Command failed: {cmd}")
 
 
+# Recipes not installed for a compiler: GLFW has no Emscripten platform, and in the browser apps use
+# Emscripten's own GLFW (-sUSE_GLFW=3).
+skipped_recipes = {
+    "emscripten": ["glfw"],
+}
+
+
 def all_requires(recipes):
     requires = []
     for recipe in recipes:
@@ -47,10 +54,11 @@ def main(
     for recipe in recipes:
         run(f"conan export {recipe}")
 
-    # A bare --requires install has no conanfile generate(), so request the generators explicitly
-    target = package if package is not None else f"{all_requires(recipes)} -g CMakeToolchain -g CMakeDeps"
-
     for compiler in compilers:
+        skipped = skipped_recipes.get(compiler, [])
+        compiler_recipes = [r for r in recipes if Path(r).parent.name not in skipped]
+        # A bare --requires install has no conanfile generate(), so request the generators explicitly
+        target = package if package is not None else f"{all_requires(compiler_recipes)} -g CMakeToolchain -g CMakeDeps"
         toolchain_flags = ""
         profile_flags = f"--profile:all={os.getcwd()}/profiles/{compiler} "
         if compiler == "emscripten":
