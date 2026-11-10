@@ -25,7 +25,7 @@ class Ironcast(ConanFile):
         "sdlgpu": True,
         "webgpu": True,
         "vulkan": True,
-        "gui_tests": False,
+        "gui_tests": True,
     }
 
     def config_options(self):
@@ -33,13 +33,15 @@ class Ironcast(ConanFile):
         if self.settings.os == "Emscripten":
             del self.options.sdlgpu
             del self.options.vulkan
+            # The test engine runs tests on std::thread, which the browser build doesn't enable
+            del self.options.gui_tests
 
     def configure(self):
         # imgui builds only the renderer backends ironcast uses
         for backend in ["opengl", "sdlgpu", "webgpu", "vulkan"]:
             if self.options.get_safe(backend) is not None:
                 setattr(self.options["imgui"], backend, self.options.get_safe(backend))
-        self.options["imgui"].test_engine = self.options.gui_tests
+        self.options["imgui"].test_engine = bool(self.options.get_safe("gui_tests"))
 
     def requirements(self):
         for r in [
@@ -86,7 +88,7 @@ class Ironcast(ConanFile):
         tc.variables["IRONCAST_SDLGPU"] = bool(self.options.get_safe("sdlgpu"))
         tc.variables["IRONCAST_WEBGPU"] = bool(self.options.webgpu)
         tc.variables["IRONCAST_VULKAN"] = bool(self.options.get_safe("vulkan"))
-        tc.variables["IRONCAST_GUI_TESTS"] = bool(self.options.gui_tests)
+        tc.variables["IRONCAST_GUI_TESTS"] = bool(self.options.get_safe("gui_tests"))
         tc.generate()
         deps = CMakeDeps(self)
         deps.generate()
