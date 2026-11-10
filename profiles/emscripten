@@ -9,6 +9,14 @@ os=Emscripten
 
 [conf]
 tools.cmake.cmaketoolchain:generator=Ninja
+# Native Wasm exceptions: JSPI (the WebGPU backend) can't suspend through the JS invoke_* wrappers of
+# JS-based exceptions. Every package and the app have to use the same exception model.
+tools.build:cflags=["-fwasm-exceptions"]
+tools.build:cxxflags=["-fwasm-exceptions"]
+tools.build:exelinkflags=["-fwasm-exceptions"]
+tools.build:sharedlinkflags=["-fwasm-exceptions"]
+# The flags are part of the package id, so changing them rebuilds the packages
+tools.info.package_id:confs=["tools.build:cflags", "tools.build:cxxflags", "tools.build:exelinkflags", "tools.build:sharedlinkflags"]
 
 [platform_tool_requires]
 cmake/3.24.2
