@@ -10,10 +10,6 @@ add_library(
     "${SDL3WEBGPU_DIR}/sdl3webgpu.c"
 )
 
-if(APPLE)
-  target_compile_options(sdl3webgpu PRIVATE -x objective-c)
-endif()
-
 if(EMSCRIPTEN)
   target_compile_definitions(sdl3webgpu PRIVATE WEBGPU_BACKEND_EMDAWNWEBGPU)
 endif()

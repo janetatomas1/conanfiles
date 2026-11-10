@@ -19,23 +19,43 @@ class ImGui(ConanFile):
     ]
     requires = ["sdl/3.4.14"]
     package_type = "library"
+    # Renderer backends to build; imgui_impl_sdl3 is always built.
     options = {
         "shared": [True, False],
         "fPIC": [True, False],
+        "opengl": [True, False],
+        "sdlgpu": [True, False],
+        "webgpu": [True, False],
+        "vulkan": [True, False],
     }
     default_options = {
         "shared": False,
         "fPIC": True,
+        "opengl": True,
+        "sdlgpu": True,
+        "webgpu": True,
+        "vulkan": True,
     }
 
+    def config_options(self):
+        # SDL_GPU has no web driver, and there is no Vulkan in the browser
+        if self.settings.os == "Emscripten":
+            del self.options.sdlgpu
+            del self.options.vulkan
+
     def requirements(self):
-        self.requires("dawn/20261023.194543", transitive_headers=True)
+        if self.options.webgpu:
+            self.requires("dawn/20261023.194543", transitive_headers=True)
         # imgui_impl_vulkan; same version ironcast forces (vk-bootstrap pins an older one)
-        if self.settings.os != "Emscripten":
+        if self.options.get_safe("vulkan"):
             self.requires("vulkan-headers/1.4.357.0", transitive_headers=True, force=True)
 
     def generate(self):
         tc = CMakeToolchain(self)
+        tc.variables["IMGUI_OPENGL"] = bool(self.options.opengl)
+        tc.variables["IMGUI_SDLGPU"] = bool(self.options.get_safe("sdlgpu"))
+        tc.variables["IMGUI_WEBGPU"] = bool(self.options.webgpu)
+        tc.variables["IMGUI_VULKAN"] = bool(self.options.get_safe("vulkan"))
         tc.generate()
 
         deps = CMakeDeps(self)
@@ -63,6 +83,8 @@ class ImGui(ConanFile):
     def package_info(self):
         self.cpp_info.components["core"].libs = ["imgui"]
         self.cpp_info.libs = ["imgui"]
-        self.cpp_info.defines = ["IMGUI_IMPL_WEBGPU_BACKEND_DAWN"]
-        if self.settings.os != "Emscripten":
+        self.cpp_info.defines = []
+        if self.options.webgpu:
+            self.cpp_info.defines.append("IMGUI_IMPL_WEBGPU_BACKEND_DAWN")
+        if self.options.get_safe("vulkan"):
             self.cpp_info.defines.append("IMGUI_IMPL_VULKAN_NO_PROTOTYPES")

@@ -55,5 +55,3 @@ class SDL3WebGPU(ConanFile):
 
     def package_info(self):
         self.cpp_info.libs = ["sdl3webgpu"]
-        if self.settings.os == "Macos":
-            self.cpp_info.frameworks = ["CoreVideo", "IOKit", "QuartzCore", "Cocoa"]

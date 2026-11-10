@@ -12,16 +12,18 @@ set(
     "${IMGUI_DIR}/imgui_tables.cpp"
     "${IMGUI_DIR}/imgui_widgets.cpp"
     "${IMGUI_DIR}/misc/cpp/imgui_stdlib.cpp"
-    "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp"
     "${IMGUI_BACKENDS_DIR}/imgui_impl_sdl3.cpp"
-    "${IMGUI_BACKENDS_DIR}/imgui_impl_sdlgpu3.cpp"
-    "${IMGUI_BACKENDS_DIR}/imgui_impl_wgpu.cpp"
 )
 file(GLOB HEADER_FILES "${IMGUI_DIR}/*.h")
 file(GLOB HEADER_BACKEND_FILES "${IMGUI_BACKENDS_DIR}/*.h")
 
+# Renderer backends, set by the recipe's options
+option(IMGUI_OPENGL "Build imgui_impl_opengl3" ON)
+option(IMGUI_SDLGPU "Build imgui_impl_sdlgpu3" ON)
+option(IMGUI_WEBGPU "Build imgui_impl_wgpu" ON)
+option(IMGUI_VULKAN "Build imgui_impl_vulkan" ON)
+
 find_package(sdl REQUIRED)
-find_package(Dawn REQUIRED)
 
 add_library(
     imgui
@@ -36,28 +38,32 @@ else()
   target_compile_options(imgui PRIVATE -O3)
 endif()
 
-if(APPLE)
-  set_source_files_properties("${IMGUI_BACKENDS_DIR}/imgui_impl_wgpu.cpp" PROPERTIES COMPILE_OPTIONS "-x;objective-c++")
+if(IMGUI_OPENGL)
+  target_sources(imgui PRIVATE "${IMGUI_BACKENDS_DIR}/imgui_impl_opengl3.cpp")
 endif()
 
-# Vulkan renderer, native only. Its functions are loaded at runtime (ImGui_ImplVulkan_LoadFunctions), so the
-# Vulkan loader isn't linked; the app loads it.
-if(NOT EMSCRIPTEN)
+if(IMGUI_SDLGPU)
+  target_sources(imgui PRIVATE "${IMGUI_BACKENDS_DIR}/imgui_impl_sdlgpu3.cpp")
+endif()
+
+if(IMGUI_WEBGPU)
+  find_package(Dawn REQUIRED)
+  target_sources(imgui PRIVATE "${IMGUI_BACKENDS_DIR}/imgui_impl_wgpu.cpp")
+  # Dawn-style webgpu.h; also correct for Emscripten's emdawnwebgpu port
+  target_compile_definitions(imgui PUBLIC IMGUI_IMPL_WEBGPU_BACKEND_DAWN)
+  target_link_libraries(imgui PUBLIC dawn::webgpu_dawn)
+endif()
+
+# Vulkan renderer, native only (the recipe has no vulkan option on Emscripten). Its functions are loaded at
+# runtime (ImGui_ImplVulkan_LoadFunctions), so the Vulkan loader isn't linked; the app loads it.
+if(IMGUI_VULKAN)
   find_package(VulkanHeaders REQUIRED)
   target_sources(imgui PRIVATE "${IMGUI_BACKENDS_DIR}/imgui_impl_vulkan.cpp")
   target_compile_definitions(imgui PUBLIC IMGUI_IMPL_VULKAN_NO_PROTOTYPES)
   target_link_libraries(imgui PUBLIC vulkan-headers::vulkan-headers)
 endif()
 
-# Dawn-style webgpu.h; also correct for Emscripten's emdawnwebgpu port
-target_compile_definitions(imgui PUBLIC IMGUI_IMPL_WEBGPU_BACKEND_DAWN)
-
-target_link_libraries(
-    imgui
-    PUBLIC
-    sdl::sdl
-    dawn::webgpu_dawn
-)
+target_link_libraries(imgui PUBLIC sdl::sdl)
 
 target_include_directories(
     imgui

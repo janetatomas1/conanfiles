@@ -20,8 +20,6 @@ class Dawn(ConanFile):
     _platforms = {
         ("Linux", "x86_64"): "ubuntu-latest",
         ("Windows", "x86_64"): "windows-latest",
-        ("Macos", "armv8"): "macos-latest",
-        ("Macos", "x86_64"): "macos-15-intel",
     }
 
     @property
@@ -48,7 +46,7 @@ class Dawn(ConanFile):
             return
 
         platform = self._platforms[(str(self.settings.os), str(self.settings.arch))]
-        # Linux/macOS Release archives work for Debug too (and the Linux Debug one is ~850MB)
+        # Linux Release archives work for Debug too (and the Linux Debug one is ~850MB)
         build_type = "Debug" if self.settings.compiler == "msvc" and self.settings.build_type == "Debug" else "Release"
         get(self, f"{self._release_url}/Dawn-{self.commit}-{platform}-{build_type}.tar.gz", strip_root=True)
 
@@ -90,5 +88,3 @@ class Dawn(ConanFile):
             self.cpp_info.system_libs = ["dl", "rt", "pthread", "m"]
         elif self.settings.os == "Windows":
             self.cpp_info.system_libs = ["user32", "onecore_apiset", "dxguid", "advapi32", "dbghelp"]
-        elif self.settings.os == "Macos":
-            self.cpp_info.frameworks = ["CoreFoundation", "Foundation", "IOSurface", "QuartzCore", "Cocoa", "IOKit", "Metal"]
