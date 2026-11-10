@@ -96,12 +96,14 @@ class ImGui(ConanFile):
         cmake.install()
 
     def package_info(self):
-        self.cpp_info.components["core"].libs = ["imgui"]
-        self.cpp_info.libs = ["imgui"]
-        self.cpp_info.defines = []
+        # With a component, CMakeDeps uses only the component's info: the defines have to be set on it.
+        core = self.cpp_info.components["core"]
+        core.libs = ["imgui"]
         if self.options.webgpu:
-            self.cpp_info.defines.append("IMGUI_IMPL_WEBGPU_BACKEND_DAWN")
+            core.defines.append("IMGUI_IMPL_WEBGPU_BACKEND_DAWN")
         if self.options.get_safe("vulkan"):
-            self.cpp_info.defines.append("IMGUI_IMPL_VULKAN_NO_PROTOTYPES")
+            core.defines.append("IMGUI_IMPL_VULKAN_NO_PROTOTYPES")
         if self.options.test_engine:
-            self.cpp_info.defines += ["IMGUI_ENABLE_TEST_ENGINE", "IMGUI_TEST_ENGINE_ENABLE_COROUTINE_STDTHREAD_IMPL=1"]
+            core.defines += ["IMGUI_ENABLE_TEST_ENGINE", "IMGUI_TEST_ENGINE_ENABLE_COROUTINE_STDTHREAD_IMPL=1"]
+            if self.settings.os == "Linux":
+                core.system_libs.append("pthread")
