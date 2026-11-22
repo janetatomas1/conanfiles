@@ -48,6 +48,7 @@ class Ironcast(ConanFile):
             "stb/cci.20240531",
             "nlohmann_json/3.11.3",
             "concurrentqueue/1.0.4",
+            "sigslot/1.2.3",
             "imgui/1.92.9b-docking",
             "gtest/1.17.0",
         ]:
